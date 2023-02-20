@@ -5,38 +5,38 @@ from tkinter import ttk
 from tkinter.messagebox import askokcancel, WARNING
 
 
-class CenterWidgetMixin:
-    def center(self):
-        self.update()
-        w = self.winfo_width()
-        h = self.winfo_height()
-        ws = self.winfo_screenwidth()
-        hs = self.winfo_screenheight()
-        x = int(ws/2 - w/2)
-        y = int(hs/2 - h/2)
-        self.geometry(f"{w}x{h}+{x}+{y}")
+class CenterWidgetMixin: # Mixin para centrar la ventana
+    def center(self): #creamos el método center
+        self.update() #actualizamos la ventana
+        w = self.winfo_width()  #obtenemos el ancho de la ventana
+        h = self.winfo_height() #obtenemos el alto de la ventana
+        ws = self.winfo_screenwidth()   #obtenemos el ancho de la pantalla
+        hs = self.winfo_screenheight()  #obtenemos el alto de la pantalla
+        x = int(ws/2 - w/2)     #calculamos la posición x
+        y = int(hs/2 - h/2)     #calculamos la posición y
+        self.geometry(f"{w}x{h}+{x}+{y}")   #establecemos la posición de la ventana
 
 
-class CreateClientWindow(Toplevel, CenterWidgetMixin):
-    def __init__(self, parent):
-        super().__init__(parent)
-        self.title("Crear cliente")
-        self.build()
-        self.center()
-        self.transient(parent)
-        self.grab_set()
+class CreateClientWindow(Toplevel, CenterWidgetMixin): #creamos la clase CreateClientWindow que hereda de Toplevel y CenterWidgetMixin
+    def __init__(self, parent): #creamos el método __init__ con el atributo parent
+        super().__init__(parent) #llamamos al método __init__ de la clase padre
+        self.title("Crear cliente") #establecemos el título de la ventana
+        self.build()    #llamamos al método build
+        self.center()   #llamamos al método center
+        self.transient(parent)  #establecemos la ventana como transient
+        self.grab_set() #establecemos la ventana como grab_set
 
-    def build(self):
-        frame = Frame(self)
-        frame.pack(padx=20, pady=10)
+    def build(self):  #creamos el método build
+        frame = Frame(self)     #creamos el frame
+        frame.pack(padx=20, pady=10)    #establecemos el padding del frame
 
-        Label(frame, text="DNI (2 ints y 1 upper char)").grid(row=0, column=0)
-        Label(frame, text="Nombre (de 2 a 30 chars)").grid(row=0, column=1)
-        Label(frame, text="Apellido (de 2 a 30 chars)").grid(row=0, column=2)
+        Label(frame, text="DNI (2 ints y 1 upper char)").grid(row=0, column=0)  #creamos el label DNI
+        Label(frame, text="Nombre (de 2 a 30 chars)").grid(row=0, column=1)  #creamos el label Nombre
+        Label(frame, text="Apellido (de 2 a 30 chars)").grid(row=0, column=2)   #creamos el label Apellido
 
-        dni = Entry(frame)
-        dni.grid(row=1, column=0)
-        dni.bind("<KeyRelease>", lambda event: self.validate(event, 0))
+        dni = Entry(frame)  #creamos el entry DNI
+        dni.grid(row=1, column=0)   #establecemos la posición del entry DNI
+        dni.bind("<KeyRelease>", lambda event: self.validate(event, 0))   #establecemos el evento KeyRelease para validar el entry DNI
         nombre = Entry(frame)
         nombre.grid(row=1, column=1)
         nombre.bind("<KeyRelease>", lambda event: self.validate(event, 1))
@@ -44,35 +44,35 @@ class CreateClientWindow(Toplevel, CenterWidgetMixin):
         apellido.grid(row=1, column=2)
         apellido.bind("<KeyRelease>", lambda event: self.validate(event, 2))
 
-        frame = Frame(self)
-        frame.pack(pady=10)
+        frame = Frame(self) #creamos el frame
+        frame.pack(pady=10) #establecemos el padding del frame
 
-        crear = Button(frame, text="Crear", command=self.create_client)
-        crear.configure(state=DISABLED)
-        crear.grid(row=0, column=0)
-        Button(frame, text="Cancelar", command=self.close).grid(row=0, column=1)
+        crear = Button(frame, text="Crear", command=self.create_client) #creamos el botón Crear
+        crear.configure(state=DISABLED) #establecemos el estado del botón Crear como deshabilitado
+        crear.grid(row=0, column=0) #establecemos la posición del botón Crear
+        Button(frame, text="Cancelar", command=self.close).grid(row=0, column=1)    #creamos el botón Cancelar
 
-        self.validaciones = [0, 0, 0]
-        self.crear = crear
-        self.dni = dni
+        self.validaciones = [0, 0, 0]   #creamos la lista validaciones
+        self.crear = crear  
+        self.dni = dni  
         self.nombre = nombre
         self.apellido = apellido
 
-    def create_client(self):
-        self.master.treeview.insert(
-            parent='', index='end', iid=self.dni.get(),
-            values=(self.dni.get(), self.nombre.get(), self.apellido.get()))
-        db.Clientes.crear(self.dni.get(), self.nombre.get(), self.apellido.get())
-        self.close()
+    def create_client(self):   #creamos el método create_client
+        self.master.treeview.insert( #insertamos los datos en el treeview
+            parent='', index='end', iid=self.dni.get(),     #establecemos el parent, index e iid
+            values=(self.dni.get(), self.nombre.get(), self.apellido.get()))    #establecemos los valores
+        db.Clientes.crear(self.dni.get(), self.nombre.get(), self.apellido.get())   #insertamos los datos en la base de datos
+        self.close()    #llamamos al método close
 
     def close(self):
         self.destroy()
         self.update()
 
-    def validate(self, event, index):
-        valor = event.widget.get()
+    def validate(self, event, index):   #creamos el método validate
+        valor = event.widget.get()  
         valido = helpers.dni_valido(valor, db.Clientes.lista) if index == 0 \
-            else (valor.isalpha() and len(valor) >= 2 and len(valor) <= 30)
+            else (valor.isalpha() and len(valor) >= 2 and len(valor) <= 30) 
         event.widget.configure({"bg": "Green" if valido else "Red"})
         # Cambiar el estado del botón en base a las validaciones
         self.validaciones[index] = valido

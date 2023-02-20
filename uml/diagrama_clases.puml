@@ -1,6 +1,8 @@
 @startuml name 
-Alice Bob 
-Alice -> Bob : hello 
-Bob -> Alice : hello 
+
+participant Alice
+participant Bob
+Alice -> Bob : hello
+Bob -> Alice : hello
 
 @enduml
