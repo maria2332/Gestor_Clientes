@@ -145,32 +145,32 @@ class EditClientWindow(Toplevel, CenterWidgetMixin):
         self.actualizar.config(state=NORMAL if self.validaciones == [1, 1] else DISABLED)
 
 
-class MainWindow(Tk, CenterWidgetMixin):
-    def __init__(self):
+class MainWindow(Tk, CenterWidgetMixin):    #creamos la clase MainWindow que hereda de Tk y CenterWidgetMixin
+    def __init__(self): #creamos el método __init__
         super().__init__()
         self.title("Gestor de clientes")
         self.build()
         self.center()
 
-    def build(self):
-        frame = Frame(self)
-        frame.pack()
+    def build(self):   #creamos el método build
+        frame = Frame(self) #creamos el frame
+        frame.pack()   #empaquetamos el frame
 
-        treeview = ttk.Treeview(frame)
-        treeview['columns'] = ('DNI', 'Nombre', 'Apellido')
+        treeview = ttk.Treeview(frame) #creamos el treeview
+        treeview['columns'] = ('DNI', 'Nombre', 'Apellido') #establecemos las columnas
 
-        treeview.column("#0", width=0, stretch=NO)
-        treeview.column("DNI", anchor=CENTER)
-        treeview.column("Nombre", anchor=CENTER)
-        treeview.column("Apellido", anchor=CENTER)
+        treeview.column("#0", width=0, stretch=NO) #establecemos el ancho de la columna 0
+        treeview.column("DNI", anchor=CENTER)   #establecemos el ancho de la columna DNI
+        treeview.column("Nombre", anchor=CENTER)    #establecemos el ancho de la columna Nombre
+        treeview.column("Apellido", anchor=CENTER)  #establecemos el ancho de la columna Apellido
 
-        treeview.heading("DNI", text="DNI", anchor=CENTER)
-        treeview.heading("Nombre", text="Nombre", anchor=CENTER)
-        treeview.heading("Apellido", text="Apellido", anchor=CENTER)
+        treeview.heading("DNI", text="DNI", anchor=CENTER)  #establecemos el encabezado de la columna DNI
+        treeview.heading("Nombre", text="Nombre", anchor=CENTER)    #establecemos el encabezado de la columna Nombre
+        treeview.heading("Apellido", text="Apellido", anchor=CENTER)    #establecemos el encabezado de la columna Apellido
 
-        scrollbar = Scrollbar(frame)
-        scrollbar.pack(side=RIGHT, fill=Y)
-        treeview['yscrollcommand'] = scrollbar.set
+        scrollbar = Scrollbar(frame) #creamos el scrollbar
+        scrollbar.pack(side=RIGHT, fill=Y) #empaquetamos el scrollbar
+        treeview['yscrollcommand'] = scrollbar.set  #establecemos el comando del scrollbar
 
         for cliente in db.Clientes.lista:
             treeview.insert(
