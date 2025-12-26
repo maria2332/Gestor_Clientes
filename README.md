@@ -20,6 +20,13 @@
 
 ---
 
+## 📚 Project Documentation (External)
+
+An automatically generated documentation view of this repository is available via DeepWiki:
+
+👉 https://deepwiki.com/maria2332/Gestor_Clientes
+---
+
 ## 🎓 Academic Context
 
 This repository contains an academic project designed to practice fundamental
