@@ -128,11 +128,5 @@ pytest -q
 This project represents a clean academic implementation of a customer management system,
 with emphasis on clarity, maintainability, and good development practices.
 
----
-
-<p align="center">
-  <em>Academic project – María Arribas Ballesteros</em>
-</p>
-```
 
 
